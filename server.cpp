@@ -1,5 +1,5 @@
 #include "shared.hpp"
 
 int main() {
-	return 0;
+    return 0;
 }
