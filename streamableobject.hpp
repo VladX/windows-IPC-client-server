@@ -44,8 +44,10 @@ protected:
     StreamableObjectSchema schema_;
 
     // Register a method with the specified name in the schema which could be called later
-    void RegisterMethod(const std::string &name, const void* method) {
-        schema_.RegisterMethod(name, reinterpret_cast<StreamableObjectSchema::MethodPointer>(method));
+    template<typename T>
+    void RegisterMethod(const std::string &name, void (T::* method)()) {
+        const void* ptr = *reinterpret_cast<const void**>(&method);
+        schema_.RegisterMethod(name, reinterpret_cast<StreamableObjectSchema::MethodPointer>(ptr));
     }
 
 public:

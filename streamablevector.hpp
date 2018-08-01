@@ -2,13 +2,17 @@
 
 #include "streamableobject.hpp"
 #include <cstring>
+#include <cstdlib>
 
 class StreamableVector : public StreamableObject {
 private:
     std::vector<int64_t> value_;
 
 public:
-    StreamableVector() : StreamableObject(VECTOR) {}
+    StreamableVector() : StreamableObject(VECTOR) {
+        RegisterMethod("PopBack", &StreamableVector::PopBack);
+        RegisterMethod("PushBackRandom", &StreamableVector::PushBackRandom);
+    }
 
     void Serialize(uint8_t* data) const override {
         *reinterpret_cast<size_t*>(data) = value_.size();
@@ -41,5 +45,13 @@ public:
         for (size_t i = 0; i < size; ++i)
             stream >> value_[i];
         return stream;
+    }
+
+    void PopBack() {
+        value_.pop_back();
+    }
+
+    void PushBackRandom() {
+        value_.push_back(rand());
     }
 };
