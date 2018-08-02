@@ -5,6 +5,8 @@
 #include <ostream>
 #include <istream>
 
+namespace Streamlabs {
+
 class IStreamable {
 public:
     // Serialize to a byte sequence which could be sent through a byte-stream
@@ -32,3 +34,5 @@ public:
         return streamable.Scan(stream);
     }
 };
+
+}

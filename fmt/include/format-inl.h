@@ -501,19 +501,15 @@ FMT_FUNC void vprint(wstring_view format_str, wformat_args args) {
 
 #ifndef FMT_EXTENDED_COLORS
 FMT_FUNC void vprint_colored(color c, string_view format, format_args args) {
-  char escape[] = "\x1b[30m";
-  escape[3] = static_cast<char>('0' + c);
-  std::fputs(escape, stdout);
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
   vprint(format, args);
-  std::fputs(internal::data::RESET_COLOR, stdout);
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
 }
 
 FMT_FUNC void vprint_colored(color c, wstring_view format, wformat_args args) {
-  wchar_t escape[] = L"\x1b[30m";
-  escape[3] = static_cast<wchar_t>('0' + c);
-  std::fputws(escape, stdout);
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
   vprint(format, args);
-  std::fputws(internal::data::WRESET_COLOR, stdout);
+  SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE);
 }
 #else
 namespace internal {

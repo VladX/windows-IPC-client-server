@@ -8,6 +8,15 @@
 #ifndef FMT_CORE_H_
 #define FMT_CORE_H_
 
+#ifdef _WIN32
+# define WIN32_LEAN_AND_MEAN
+# ifdef __MINGW32__
+#  include <cstring>
+# endif
+# include <windows.h>
+# undef ERROR
+#endif
+
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -1197,7 +1206,22 @@ void arg(S, internal::named_arg<T, Char>) FMT_DELETED;
 
 #ifndef FMT_EXTENDED_COLORS
 // color and (v)print_colored are deprecated.
+
+#ifdef _WIN32
+enum color {
+    black = 0,
+    red = FOREGROUND_RED | FOREGROUND_INTENSITY,
+    green = FOREGROUND_GREEN | FOREGROUND_INTENSITY,
+    yellow = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY,
+    blue = FOREGROUND_BLUE | FOREGROUND_INTENSITY,
+    magenta = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY,
+    cyan = FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_BLUE,
+    white = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY
+};
+#else
 enum color { black, red, green, yellow, blue, magenta, cyan, white };
+#endif
+
 FMT_API void vprint_colored(color c, string_view format, format_args args);
 FMT_API void vprint_colored(color c, wstring_view format, wformat_args args);
 template <typename... Args>

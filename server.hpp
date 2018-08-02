@@ -4,22 +4,14 @@
 
 namespace Streamlabs {
 
-class Server {
-private:
-    const std::string path_;
-    HANDLE pipe_;
-
+class Server : public Connection {
 public:
-    Server(const std::string &path) : path_(path), pipe_(0) {}
-
-    ~Server() {
-        CloseHandle(pipe_);
-    }
+    Server(const std::string &path) : Connection(path) {}
 
     void Connect() {
         pipe_ = CreateNamedPipeA(
             path_.c_str(), // name of the pipe
-            PIPE_ACCESS_DUPLEX, // 2-way pipe
+            PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED, // 2-way pipe
             PIPE_TYPE_BYTE, // send data as a byte stream
             1,
             0,
@@ -35,6 +27,7 @@ public:
             CloseHandle(pipe_);
             throw fmt::windows_error(error, "Failed to make connection on named pipe");
         }
+        stream_ = std::make_unique<asio::windows::stream_handle>(io_service_, pipe_);
     }
 };
 
