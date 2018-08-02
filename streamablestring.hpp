@@ -3,6 +3,8 @@
 #include "streamableobject.hpp"
 #include <cstring>
 
+namespace Streamlabs {
+
 class StreamableString : public StreamableObject {
 private:
     std::string value_;
@@ -32,3 +34,5 @@ public:
         return stream >> value_;
     }
 };
+
+}

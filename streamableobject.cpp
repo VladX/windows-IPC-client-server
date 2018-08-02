@@ -4,6 +4,8 @@
 #include "streamablestring.hpp"
 #include "streamablevector.hpp"
 
+namespace Streamlabs {
+
 const char* const kObjectNames[kNumberOfObjects] = {"Integer", "Float", "String", "Vector"};
 
 std::unique_ptr<StreamableObject> StreamableObject::Create(StreamableObjectType type) {
@@ -18,4 +20,6 @@ std::unique_ptr<StreamableObject> StreamableObject::Create(StreamableObjectType 
             return std::make_unique<StreamableVector>();
     }
     return std::unique_ptr<StreamableObject>{};
+}
+
 }

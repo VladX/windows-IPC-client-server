@@ -2,6 +2,8 @@
 
 #include "streamableobject.hpp"
 
+namespace Streamlabs {
+
 class StreamableInteger : public StreamableObject {
 private:
     int64_t value_;
@@ -29,3 +31,5 @@ public:
         return stream >> value_;
     }
 };
+
+}

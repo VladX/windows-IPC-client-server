@@ -4,6 +4,8 @@
 #include <cstring>
 #include <cstdlib>
 
+namespace Streamlabs {
+
 class StreamableVector : public StreamableObject {
 private:
     std::vector<int64_t> value_;
@@ -55,3 +57,5 @@ public:
         value_.push_back(rand());
     }
 };
+
+}

@@ -6,6 +6,8 @@
 #include <map>
 #include <vector>
 
+namespace Streamlabs {
+
 enum StreamableObjectType {
     INTEGER = 0,
     FLOAT,
@@ -67,3 +69,5 @@ public:
     // Factory method to create an empty object with the given type
     static std::unique_ptr<StreamableObject> Create(StreamableObjectType type);
 };
+
+}

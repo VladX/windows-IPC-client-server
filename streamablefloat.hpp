@@ -2,6 +2,8 @@
 
 #include "streamableobject.hpp"
 
+namespace Streamlabs {
+
 class StreamableFloat : public StreamableObject {
 private:
     float value_;
@@ -29,3 +31,5 @@ public:
         return stream >> value_;
     }
 };
+
+}
