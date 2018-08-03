@@ -6,7 +6,7 @@
 
 namespace Streamlabs {
 
-const char* const kObjectNames[kNumberOfObjects] = {"Integer", "Float", "String", "Vector"};
+const std::vector<std::string> kObjectNames = {"integer", "float", "string", "vector"};
 
 std::unique_ptr<StreamableObject> StreamableObject::Create(StreamableObjectType type) {
     switch (type) {
@@ -19,7 +19,12 @@ std::unique_ptr<StreamableObject> StreamableObject::Create(StreamableObjectType 
         case VECTOR:
             return std::make_unique<StreamableVector>();
     }
-    return std::unique_ptr<StreamableObject>{};
+    throw std::logic_error("Unknown object type");
+}
+
+std::unique_ptr<StreamableObject> StreamableObject::Create(const std::string &type_name) {
+    const auto type = std::find(kObjectNames.begin(), kObjectNames.end(), type_name) - kObjectNames.begin();
+    return Create(static_cast<StreamableObjectType>(type));
 }
 
 }

@@ -6,8 +6,8 @@ namespace Streamlabs {
 
 enum EventType {
     SEND_OBJECT = 1,
-    CREATE_OBJECT,
-    REQUEST_SUMMARY,
+    CALL_METHOD,
+    INSPECT_OBJECT,
 };
 
 struct EventHeader {

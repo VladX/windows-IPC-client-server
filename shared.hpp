@@ -5,6 +5,7 @@
 #include "argparser.hpp"
 #include "asio.hpp"
 #include "fmt/include/format.h"
+#include <algorithm>
 
 namespace Streamlabs {
 
@@ -22,7 +23,7 @@ public:
 
     void Connect() {}
 
-    void SendEvent(const EventHeader &header, const void* data) {
+    void SendEvent(const EventHeader &header, const void* data = nullptr) {
         asio::write(*stream_, asio::buffer(&header, sizeof(header)));
         if (header.length > 0)
             asio::write(*stream_, asio::buffer(data, header.length));
@@ -36,6 +37,15 @@ public:
             asio::read(*stream_, asio::buffer(data, header.length));
         }
         return std::unique_ptr<const uint8_t[]>(data);
+    }
+
+    void SendObject(const std::unique_ptr<StreamableObject> &object) {
+        const StreamableObjectType type = object->GetType();
+        const auto length = object->GetLength();
+        std::vector<uint8_t> data(sizeof(type) + length);
+        *reinterpret_cast<StreamableObjectType*>(data.data()) = type;
+        object->Serialize(data.data() + sizeof(type));
+        SendEvent({SEND_OBJECT, data.size()}, data.data());
     }
 };
 

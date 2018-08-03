@@ -5,6 +5,9 @@
 namespace Streamlabs {
 
 class Server : public Connection {
+private:
+    std::vector<std::unique_ptr<StreamableObject>> objects_;
+
 public:
     Server(const std::string &path) : Connection(path) {}
 
@@ -28,6 +31,30 @@ public:
             throw fmt::windows_error(error, "Failed to make connection on named pipe");
         }
         stream_ = std::make_unique<asio::windows::stream_handle>(io_service_, pipe_);
+    }
+
+    StreamableObject &AddObject(StreamableObjectType type) {
+        objects_.push_back(StreamableObject::Create(type));
+        return *objects_.back();
+    }
+
+    void CallMethod(uint64_t index, const std::string &name) {
+        objects_.at(index)->CallMethod(name);
+    }
+
+    void SendObject(const std::unique_ptr<StreamableObject> &object) {
+        Connection::SendObject(object);
+    }
+
+    void SendObject(uint64_t index) {
+        SendObject(objects_.at(index));
+    }
+
+    void PrintSummary() {
+        std::cout << std::endl << "=== SUMMARY ===\nTotal number of objects stored: " << objects_.size() << std::endl;
+        for (size_t i = 0; i < objects_.size(); ++i)
+            std::cout << "Index = " << i << "; Value = " << (*objects_[i]) << std::endl;
+        std::cout << std::endl;
     }
 };
 

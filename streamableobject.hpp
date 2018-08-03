@@ -13,10 +13,9 @@ enum StreamableObjectType {
     FLOAT,
     STRING,
     VECTOR,
-    kNumberOfObjects,
 };
 
-extern const char* const kObjectNames[kNumberOfObjects]; // Object type names as strings
+extern const std::vector<std::string> kObjectNames; // Object type names as strings
 
 class StreamableObjectSchema {
 private:
@@ -68,6 +67,9 @@ public:
 
     // Factory method to create an empty object with the given type
     static std::unique_ptr<StreamableObject> Create(StreamableObjectType type);
+
+    // Factory method to create an empty object with the given type name
+    static std::unique_ptr<StreamableObject> Create(const std::string &type_name);
 };
 
 }
