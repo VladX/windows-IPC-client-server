@@ -39,3 +39,5 @@ it has exactly the same command line options as the server.
 If you managed to open the client, you will see a welcoming prompt and a help message. Type `h` command to see a help message with all the available commands.
 
 Now you can play with the client.
+
+![Client](figures/client.png)
