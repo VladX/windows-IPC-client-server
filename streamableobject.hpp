@@ -19,7 +19,11 @@ extern const std::vector<std::string> kObjectNames; // Object type names as stri
 
 class StreamableObjectSchema {
 private:
+#ifdef _MSC_VER
+    typedef void(__thiscall *MethodPointer)(void*);
+#else
     typedef void(*MethodPointer)(void*);
+#endif
 
     std::vector<std::string> method_names_;
     std::map<std::string, MethodPointer> methods;
