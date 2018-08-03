@@ -50,6 +50,8 @@ public:
     }
 
     void PopBack() {
+        if (value_.empty())
+            throw std::out_of_range("Vector is empty");
         value_.pop_back();
     }
 
