@@ -1,4 +1,4 @@
-# StreamLabs Assignment
+# Windows IPC server
 
 ## Binaries
 
